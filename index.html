@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Cinematica — Movie Application </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div>
+                <div class="logo-title"> Cinematica </div>
+                <div class="logo-subtitle"> The Grand Arena — Movie Plan Application </div>
+            </div>
+        </div>
+        <nav>
+            <div class="nav-links">
+                <a class="nav-link active" onclick="switchView('explore', event)"> Explore & Suggestions </a>
+                <a class="nav-link" onclick="switchView('watchlist', event)" > My Watchlist </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div id="feedback-box"></div>
+
+        <!-- PAGE 1: EXPLORE & SUGGESTIONS -->
+        <div id="page-explore" class="view-section active">
+            
+            <div class="hero-banner">
+                <h1> Curate Your Cinematic Journey </h1>
+                <p> Discover films, get custom recommendations, and build your watchlist. </p>
+            </div>
+
+            <div class="card">
+                <h3> Search Movies </h3>
+                <div class="search-bar-group">
+                    <input type="text" id="movieSearchInput" placeholder="Enter movie title ...">
+                    <button class="btn" onclick="searchMoviesAPI()"> Enter </button>
+                </div>
+                <div id="apiResultsContainer" class="movie-grid"></div>
+            </div>
+
+            <div class="card">
+                <h3> Trending Now </h3>
+                <p style="font-size: 13px; margin-bottom: 15px; color: #555; font-style: italic;"> Popular films currently trending on TMDB: </p>
+                <div id="trendingContainer" class="movie-grid"></div>
+            </div>
+
+            <div class="suggestion-box"> 
+                <h4> Smart Recommendation </h4>
+                <p style="font-size: 13px; margin-bottom: 12px; color: #555;"> Select your current mood and favorite genre: </p>
+                <div class="search-bar-group">
+                    <select id="suggestGenre">
+                        <option value="28"> Action & Adventure </option>
+                        <option value="878"> Sci-Fi & Fantasy </option>
+                        <option value="18"> Drama </option>
+                        <option value="16"> Animation </option>
+                        <option value="27"> Horror & Thriller </option>
+                    </select>
+                    <select id="suggestMood">
+                        <option value="high"> High Thrills </option>
+                        <option value="relax"> Relaxing & Cozy </option>
+                        <option value="deep"> Thought-Provoking </option>
+                    </select>
+                    <button class="btn" onclick="generateSmartSuggestion()"> Get Suggestion </button>
+                </div>
+                <div id="suggestionOutput" style="font-weight: bold; color: #6b1116; margin-top: 10px;"></div>
+            </div>
+
+        </div>
+
+        <!-- PAGE 2: WATCHLIST  -->
+        <div id="page-watchlist" class="view-section">
+            
+            <div class="hero-banner" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('images/img1.jpeg') center/cover;">
+                <h1> Watchlist Dashboard </h1>
+                <p> Manage your saved movies and review real-time analytics. </p>
+            </div>
+
+            <div class="metrics-container">
+                <div class="metric-card">
+                    <div class="metric-title"> Total Watch Time </div>
+                    <div class="metric-value" id="calcTotalTime"> 0 mins (0.0 hrs) </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title"> Average TMDB Score </div>
+                    <div class="metric-value" id="calcAvgRating"> 0.0 / 10 </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title"> Est. Marathon Completion </div>
+                    <div class="metric-value" id="calcMarathonDays"> 0.0 Days </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3> Add New Watchlist </h3>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="customTitle" placeholder="Movie Title">
+                    <input type="number" id="customRuntime" placeholder="Runtime (mins)" value="120">
+                    <input type="number" id="customRating" placeholder="Score (0-10)" step="0.1" value="8.0">
+                    <select id="customStatus">
+                        <option value="Plan to Watch"> Plan to Watch </option>
+                        <option value="Watching"> Watching </option>
+                        <option value="Completed"> Completed </option>
+                    </select>
+                    <button class="btn" onclick="addCustomMovie()"> Add Record </button>
+                </div>
+
+                <h3> Saved Watchlist Records </h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Runtime</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="watchlistTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="renderer.js"></script>
+
+    <div id="movieModal" class="modal-overlay" onclick="closeMovieModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeMovieModal()">&times;</button>
+            <div id="modalBodyContainer"></div>
+        </div>
+    </div>   
+</body>
+</html>
